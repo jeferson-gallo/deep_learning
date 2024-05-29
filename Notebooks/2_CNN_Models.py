@@ -264,24 +264,19 @@ def plotgraph(epochs, train, val, ax, plot, title):
 
 
 
-
-
-
-
-
 #### Load data ####
 
-task_list = ["alphabet", "freewriting", "house", "line1", "name", "rey"]#, "spiral"]
+task_list = ["alphabet", "freewriting", "house", "line1", "name", "rey", "spiral"]
 
 
 for task in task_list:
 
     # task = "spiral"
-    dp = 0.4
+    dp = 0.25
     lr = 1e-6
     wd = 1e-4
 
-    epch = 5000
+    epch = 2000
     pt = 100
     md = 0.00001
     bz = 6
@@ -290,27 +285,9 @@ for task in task_list:
     model_name = "VGG16"
 
 
-
-    # task_list = ["alphabet", "freewriting", "house", "line1", "name", "rey", "spiral"]
-
-
     db_path = os.path.join(pp,f"Dataset/hw_drawings", task)
-
     X, y = load_images_vgg16(db_path)
     X_train, y_train_c, X_val, y_val_c, X_test, y_test_c = split_data(X, y)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -339,10 +316,6 @@ for task in task_list:
     # features = model.predict(x)
 
     model.summary()
-
-
-
-
 
 
 
@@ -447,11 +420,6 @@ for task in task_list:
     model.summary()
 
 
-
-
-
-
-
     model.evaluate(X_train, y_train_c)
 
     model.evaluate(X_val, y_val_c)
@@ -461,10 +429,6 @@ for task in task_list:
     y_pred = y_pred_c.argmax(axis=1)
     y_true = y_test_c.argmax(axis=1)
     print(y_true.shape, y_pred.shape)
-
-
-
-
 
 
     #### Mostrar la microclasificación ####
@@ -477,18 +441,6 @@ for task in task_list:
     table_report = classification_report(y_true, y_pred, digits=4, output_dict=True, target_names=list(label_dictionary.values()))
     table_report = pd.DataFrame.from_dict(table_report).T
     print(report)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     labels = list(label_dictionary.values())
