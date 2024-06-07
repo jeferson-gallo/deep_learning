@@ -9,7 +9,7 @@ import pickle
 
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, f1_score, recall_score, precision_score, balanced_accuracy_score, classification_report
 
 
 import tensorflow as tf
@@ -286,32 +286,40 @@ def plotgraph(epochs, train, val, ax, plot, title):
 
 
 
-
-
-
-
-
 #### Load data ####
+b_list = [5,4,3,2]
 
-task_list = ["alphabet", "freewriting", "house", "line1", "name", "rey", "spiral"]
-# task_list = ["rey", "spiral"]
-# task_list = ["alphabet"]
+## Save info ##
+block_list = []
+acc_list = []
+b_acc_list = []
+sens_list = []
+spec_list = []
+f1_s_list = []
 
-for task in task_list:
+
+for block in b_list:
 
     # task = "spiral"
     dp = 0.25
     lr = 1e-6
     wd = 1e-4
 
-    epch = 2000
-    pt = 100
+    # epch = 2000
+    # pt = 100
+    # md = 0.00001
+    # bz = 6
+
+    epch = 10
+    pt = 5
     md = 0.00001
     bz = 6
 
     pp = "../"
-    model_name = "Test_VGG16"
-
+    block_name = f"block{block}"
+    model_name = f"Test_Fine_Tune_VGG16_Block{block}"
+    task = "name"
+    
 
     db_path = os.path.join(pp,f"Dataset/hw_drawings", task)
     X, y = load_images_vgg16(db_path)
@@ -327,9 +335,16 @@ for task in task_list:
     # this is the model we will train
     model = Model(inputs=base_model.input, outputs=predictions)
     # first: train only the top layers (which were randomly initialized)
-    # i.e. freeze all convolutional InceptionV3 layers
-    for layer in base_model.layers:
-        layer.trainable = False
+    
+    trainable_flag = False
+    #### Set up  VGG16 layers as trainable or not ####
+    
+    for layer in model.layers:
+        if(f"block{block}_conv" in layer.name):
+            trainable_flag = True
+    
+    print(layer.name, trainable_flag)
+    layer.trainable = trainable_flag
 
     for i, layer in enumerate(model.layers):
         print(i, layer.name)
@@ -344,7 +359,6 @@ for task in task_list:
     # features = model.predict(x)
 
     model.summary()
-
 
 
 
@@ -399,13 +413,6 @@ for task in task_list:
 
 
 
-
-
-
-
-
-
-
     acc = history['accuracy']
     val_acc = history['val_accuracy']
     loss = history['loss']
@@ -432,9 +439,6 @@ for task in task_list:
 
 
 
-
-
-
     model_file = os.path.join(model_path, f"{model_name}_model.keras")
     print(model_file)
 
@@ -451,6 +455,26 @@ for task in task_list:
     y_pred = y_pred_c.argmax(axis=1)
     y_true = y_test_c.argmax(axis=1)
     print(y_true.shape, y_pred.shape)
+    
+
+    ##  Evaluate metrics ##
+    acc = accuracy_score(y_true, y_pred)*100
+    b_acc = balanced_accuracy_score(y_true, y_pred)*100
+    sens = recall_score(y_true, y_pred)*100
+    ## Specificity ##
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    spec = tn/(tn+fp)*100
+    f1_s = f1_score(y_true, y_pred)
+
+
+    #### Save info ####
+    block_list.append(block_name)
+    acc_list.append(acc)
+    b_acc_list.append(b_acc)
+    sens_list.append(sens)
+    spec_list.append(spec)
+    f1_s_list.append(f1_s)
+
 
 
     #### Mostrar la microclasificación ####
@@ -468,3 +492,19 @@ for task in task_list:
     labels = list(label_dictionary.values())
     cm_file_save = os.path.join(model_path, f"CM_{model_name}.pdf")
     confusion_matrix_plot(y_true, y_pred, cm_file_save,labels=labels, size=4, fz=15)
+
+result_df = pd.DataFrame([])
+result_df["Fine_Tune_Block"] = block_list
+result_df["Accuracy"] = acc_list
+result_df["Balanced_Accuracy"] = b_acc_list
+result_df["Specificity"] = spec_list
+result_df["Sensitivity"] = sens_list
+result_df["F1_Score"] = f1_s_list
+
+pp = "../"
+result_file = os.path.join(pp, "Results", f"Block_Fine_Tuned_VGG16.xlsx")
+print(result_file)
+result_df.sort_values(by="Accuracy", ascending=False, inplace=True)
+result_df.reset_index(drop=True, inplace=True)
+result_df.to_excel(result_file, index=False)
+result_df
