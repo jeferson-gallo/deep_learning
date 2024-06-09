@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex build/main"] 1717898329 "build/main.aux" "build/main.bbl" "build/main" 1717899041
+["bibtex build/main"] 1717912605 "build/main.aux" "build/main.bbl" "build/main" 1717912611
   "/usr/share/texlive/texmf-dist/bibtex/bst/llncs/splncs04.bst" 1642453212 32146 ee21ae2a29028dc8ad842a97200982c7 ""
-  "build/main.aux" 1717899041 2956 20b2a870c768f859ae5f5ccb1832820d "pdflatex"
-  "refs.bib" 1717895467 2146 b1ec275ddde684cb4bbf81c216eddb32 ""
+  "build/main.aux" 1717912611 3857 9445aae25c17bc41a2094ea740ae720b "pdflatex"
+  "refs.bib" 1717904267 2146 b1ec275ddde684cb4bbf81c216eddb32 ""
   (generated)
   "build/main.bbl"
   "build/main.blg"
-["pdflatex"] 1717899036 "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Deep_Learning/deep_learning/Informe_Final_Latex/main.tex" "build/main.pdf" "main" 1717899041
+["pdflatex"] 1717912605 "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Final_Project/deep_learning/Informe_Final_Latex/main.tex" "build/main.pdf" "main" 1717912611
   "/etc/texmf/web2c/texmf.cnf" 1717789895 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/gita24/.texlive2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1717794407 1405642 cde767e4d8af7f3b78e260d8d5fbc2ec ""
-  "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Deep_Learning/deep_learning/Informe_Final_Latex/main.tex" 1717899035 19152 8c9d3107420d91c97056e6c175ff3fad ""
+  "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Final_Project/deep_learning/Informe_Final_Latex/main.tex" 1717912599 21040 d2befd96fdb2c0f41123e4b344a66386 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -33,6 +33,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1248133631 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
@@ -206,13 +207,16 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1717802863 4379155 98693266ff65f58d9f98aff394de12d2 ""
-  "build/main.aux" 1717899041 2956 20b2a870c768f859ae5f5ccb1832820d "pdflatex"
-  "build/main.bbl" 1717898329 848 a41c810c058c8d78a502817ad171ab59 "bibtex build/main"
-  "build/main.out" 1717899036 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "images/HW_Tasks.png" 1717891639 129705 9f7675f3592672658b99eb4751ec47b3 ""
-  "images/logosimbolo-horizontal.png" 1717812362 840923 4811043025fcc326f663f53fd79f4bbe ""
-  "images/logosimbolo-vertical.png" 1717812362 1933823 6da9390141f09d9179454e2245626ec4 ""
-  "main.tex" 1717899035 19152 8c9d3107420d91c97056e6c175ff3fad ""
+  "build/main.aux" 1717912611 3857 9445aae25c17bc41a2094ea740ae720b "pdflatex"
+  "build/main.bbl" 1717912605 848 a41c810c058c8d78a502817ad171ab59 "bibtex build/main"
+  "build/main.out" 1717912606 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "images/CM_Name_Dense.pdf" 1717217806 15141 d146ab875e1739d214e129daa5cef109 ""
+  "images/HW_Tasks.png" 1717904267 129705 9f7675f3592672658b99eb4751ec47b3 ""
+  "images/History_Name_Dense.pdf" 1717217799 17042 a82e185ffc5e87cecec4aa8b5f506bfb ""
+  "images/VGG16.png" 1717898458 71023 86a8fafec317e338e7b49920cdc218b8 ""
+  "images/logosimbolo-horizontal.png" 1717904267 840923 4811043025fcc326f663f53fd79f4bbe ""
+  "images/logosimbolo-vertical.png" 1717904267 1933823 6da9390141f09d9179454e2245626ec4 ""
+  "main.tex" 1717912599 21040 d2befd96fdb2c0f41123e4b344a66386 ""
   (generated)
   "build/main.aux"
   "build/main.log"

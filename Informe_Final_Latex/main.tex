@@ -107,7 +107,7 @@ innertopmargin=\topskip,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Add new commands here
-\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumi}{\alph{enumi}}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
@@ -149,7 +149,7 @@ innertopmargin=\topskip,
     \begin{center}
             
         \huge
-        \textbf{Entrega 1: Evaluación de la Enfermedad de Parkinson Mediante Datos de Escritura a Mano}\\
+        \textbf{Entrega 2: Evaluación de la Enfermedad de Parkinson Mediante Datos de Escritura a Mano}\\
         
         \huge
         Fundamentos de Deep Learning
@@ -321,6 +321,14 @@ Además, otras métricas pueden ser estimadas de acuerdo con la información de 
 
 \subsection*{Modelo de Deep Learning}
 
+\begin{figure}[h!!]
+    \centering
+    \includegraphics[width=1\textwidth]{images/VGG16.png}
+    \caption{Arquitectura VGG16.}
+    \label{fig:vgg}
+\end{figure}
+
+
 Para este trabajo se implementó la red neuronal convolucional VGG16. Esta es una arquitectura 
 desarrollada por el Visual Geometry Group (VGG) de la Universidad de Oxford, que se destacó 
 en la competición ImageNet Large Scale Visual Recognition Challenge (ILSVRC) de 2014. Se 
@@ -328,9 +336,8 @@ caracteriza por su simplicidad y efectividad, utilizando principalmente pequeña
 convolucionales de 3$\times$3 píxeles y capas de max-pooling de 2$\times$2 píxeles, organizadas en 5 bloques 
 de capas convolucionales. Esta arquitectura ha demostrado ser 
 extremadamente eficiente en tareas de reconocimiento de imágenes, estableciendo un nuevo 
-estándar en precisión y eficiencia en el campo del aprendizaje profundo~\cite{ref9}.
-
-El modelo implementado en este trabajo fue pre-entrenado con la base de datos ImageNet y se le agregan
+estándar en precisión y eficiencia en el campo del aprendizaje profundo~\cite{ref9}. El modelo 
+implementado en este trabajo~\ref*{fig:vgg} fue pre-entrenado con la base de datos ImageNet y se le agregan
 dos capas densas para realizar la clasificación entre pacientes y controles. 
 
 
@@ -343,7 +350,6 @@ la enfermedad del parkinson en la tarea de clasificación. En la Tabla~\ref*{tab
 los resultados obtenidos para las tareas cuando no se afinan ningún bloque convolucional y solamente se afinan
 las capas densas encargadas de realizar la clasificación. En la Tabla~\ref*{tab:VGG16_tuned} se encuentran 
 los resultados del experimento cuando se afinan todos los bloques convolucionales y las capas densas de la red.
-
 En ambos casos la tarea de escritura del nombre obtuvo exactitudes del 84\% del modelo sin afinar y 73.08\%
 cuando se afinaron todos los bloques convolucionales.
 
@@ -419,10 +425,37 @@ del modelo VGG16.}
 \end{table}
 
 
+\section*{Análisis de resultados}
+En la Figura~\ref*{fig:History} se encuentra el proceso de entrenamiento del mejor experimento el
+cual corresponde a la tarea "name" cuando solo se afina la capa densa. Se configuró un total de 2000
+épocas con una paciencia para el early stopping de 100. En total fueron necesarias 1400 épocas para
+afinar el modelo. Adicionalmente, en la Figura~\ref*{fig:cm} se encuentra la matriz obtenida para el
+conjunto de test en este experimento. En este caso, el 100\% de los controles fué clasificado correctamente
+mientras que el 75\% de los pacientes pudieron ser identificados por el modelo.
+
+\begin{figure}[h!!]
+    \centering
+    \includegraphics[width=1\textwidth]{images/History_Name_Dense.pdf}
+    \caption{Curvas de entrenamiento en la tarea "name" afinando las capas densas.}
+    \label{fig:History}
+\end{figure}
+
+\begin{figure}[h!!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/CM_Name_Dense.pdf}
+    \caption{Matiz de confusión para el experimento del nombre cuando se afinan las capas densas.}
+    \label{fig:cm}
+\end{figure}
+
 
 \section*{Discribución de los notebooks}
-
-
+En el notebook \textbf{1\_Data\_Exploration} se encuentra una breve exploración de la base de
+datos, donde se realiza el conteo de participantes por tarea y la visualización de algunas tareas.
+En el notebook \textbf{2\_CNN\_Model.ipynb} se encuentra la implementación del
+pipeline de entrenamiento. Respecto al script \textbf{3\_Task\_Exploration\_VGG16.py} se realiza el primer
+experimento donde se exploran las diferentes tareas. Finalmente, en el script 
+\textbf{4\_Name\_CNN\_Models.py} se realizan los experimentos aplicando diferentes niveles de afinación
+para la mejor tarea obtenida en el experimento anterior.
 
 
 
