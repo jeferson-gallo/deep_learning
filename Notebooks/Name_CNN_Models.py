@@ -23,6 +23,7 @@ from keras.optimizers import Adam
 from keras.applications.inception_v3 import InceptionV3
 from keras.models import Model
 from keras.layers import Dense, GlobalAveragePooling2D
+from keras import backend as K
 
 
 import keras
@@ -74,7 +75,7 @@ def confusion_matrix_plot(y_true, y_pred, file_save="",labels=[], size=8, fz=15)
     if(file_save!=""):
         plt.savefig(file_save)
     
-    plt.show()
+    plt.show(block=False)
     
     return cf_matrix
 
@@ -251,7 +252,7 @@ def print_image(img, title="Image"):
     # plt.axis("off")
     plt.xticks([])
     plt.yticks([])
-    plt.show()
+    plt.show(block=False)
 
 
 def create_dir(path):
@@ -287,7 +288,7 @@ def plotgraph(epochs, train, val, ax, plot, title):
 
 
 #### Load data ####
-b_list = [5,4,3,2]
+b_list = ["dense", "block5", "block4", "block3", "block2", "block1"]
 
 ## Save info ##
 block_list = []
@@ -296,28 +297,29 @@ b_acc_list = []
 sens_list = []
 spec_list = []
 f1_s_list = []
+trainable_count_list = []
+non_trainable_count_list = []
+total_parameters_list = []
 
-
-for block in b_list:
+for layer_name_fine in b_list:
 
     # task = "spiral"
     dp = 0.25
     lr = 1e-6
     wd = 1e-4
 
-    # epch = 2000
-    # pt = 100
-    # md = 0.00001
-    # bz = 6
-
-    epch = 10
-    pt = 5
+    epch = 2000
+    pt = 100
     md = 0.00001
     bz = 6
 
+    # epch = 2
+    # pt = 2
+    # md = 0.00001
+    # bz = 6
+
     pp = "../"
-    block_name = f"block{block}"
-    model_name = f"Test_Fine_Tune_VGG16_Block{block}"
+    model_name = f"Fine_Tune_VGG16_{layer_name_fine}"
     task = "name"
     
 
@@ -340,11 +342,11 @@ for block in b_list:
     #### Set up  VGG16 layers as trainable or not ####
     
     for layer in model.layers:
-        if(f"block{block}_conv" in layer.name):
+        if(layer_name_fine in layer.name):
             trainable_flag = True
     
-    print(layer.name, trainable_flag)
-    layer.trainable = trainable_flag
+        print(layer.name, trainable_flag)
+        layer.trainable = trainable_flag
 
     for i, layer in enumerate(model.layers):
         print(i, layer.name)
@@ -361,7 +363,8 @@ for block in b_list:
     model.summary()
 
 
-
+    trainable_count = np.sum([np.prod(v.shape) for v in model.trainable_weights])
+    non_trainable_count = np.sum([np.prod(v.shape) for v in model.non_trainable_weights])
 
 
     print("Model Training: ", model_name, "\n\n")
@@ -429,7 +432,7 @@ for block in b_list:
 
     fig_file = os.path.join(model_path, f"history_{model_name}.pdf")
     plt.savefig(fig_file)
-    plt.show()
+    plt.show(block=False)
 
 
 
@@ -468,13 +471,15 @@ for block in b_list:
 
 
     #### Save info ####
-    block_list.append(block_name)
+    block_list.append(layer_name_fine)
     acc_list.append(acc)
     b_acc_list.append(b_acc)
     sens_list.append(sens)
     spec_list.append(spec)
     f1_s_list.append(f1_s)
-
+    trainable_count_list.append(trainable_count)
+    non_trainable_count_list.append(non_trainable_count)
+    total_parameters_list.append(trainable_count+non_trainable_count)
 
 
     #### Mostrar la microclasificación ####
@@ -495,6 +500,9 @@ for block in b_list:
 
 result_df = pd.DataFrame([])
 result_df["Fine_Tune_Block"] = block_list
+result_df["total_parameters"] = total_parameters_list
+result_df["trainable_count"] = trainable_count_list
+result_df["non_trainable_count"] = non_trainable_count_list
 result_df["Accuracy"] = acc_list
 result_df["Balanced_Accuracy"] = b_acc_list
 result_df["Specificity"] = spec_list
@@ -502,9 +510,10 @@ result_df["Sensitivity"] = sens_list
 result_df["F1_Score"] = f1_s_list
 
 pp = "../"
-result_file = os.path.join(pp, "Results", f"Block_Fine_Tuned_VGG16.xlsx")
+result_file = os.path.join(pp, "Results", f"Fine_Tuned_VGG16.xlsx")
 print(result_file)
-result_df.sort_values(by="Accuracy", ascending=False, inplace=True)
-result_df.reset_index(drop=True, inplace=True)
+# result_df.sort_values(by="Fine_Tune_Block", ascending=False, inplace=True)
+# result_df.reset_index(drop=True, inplace=True)
 result_df.to_excel(result_file, index=False)
 result_df
+
