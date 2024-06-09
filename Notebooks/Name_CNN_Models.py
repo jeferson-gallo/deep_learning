@@ -80,55 +80,6 @@ def confusion_matrix_plot(y_true, y_pred, file_save="",labels=[], size=8, fz=15)
     return cf_matrix
 
 
-def load_images(db_path):
-
-    ## List images from dataset ##
-    image_file_list = os.listdir(db_path)
-
-    ## Lists to save information ##
-    img_list = []
-    label_list = []
-
-    for file in image_file_list:
-
-        #### Load-pre-process-save images ####
-        ## Create image file ##
-        image_file = os.path.join(db_path, file)
-        ## Load image ##
-        img = cv2.imread(image_file)
-        ## Tranform to gray sacale ##
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # img = cv2.resize(img, (64, 64), interpolation=cv2.INTER_CUBIC) 
-        ## Reshape the image to (W, H, C) ##
-        # H, W = img.shape
-        # img = img.reshape(W, H, 1)
-        ## Normalize pixels to [0,1] ##
-        img = np.float64(img)/255.0
-        ## Invert image pixels ##
-        img = (1.0 - img)
-
-        ## save image in list ##
-        img_list.append(img)
-        #######################################
-
-        #### Assign labels ####
-        if("PD_" in file):
-            label_list.append(1)
-        else:
-            label_list.append(0)
-        #######################
-
-    ## Conver images to array object ##
-    img_arr = np.asarray(img_list)
-    ## Conver label to array object ##
-    label_arr = np.asarray(label_list)
-
-    print(img_arr.shape, type(img_arr))
-    print(label_arr.shape, type(label_arr))
-
-    return img_arr, label_arr
-
-
 def load_images_vgg16(db_path):
 
     ## List images from dataset ##
@@ -210,40 +161,6 @@ def split_data_Train_Test(X, y):
 
 
 
-def split_data(X, y):
-
-    #### Codify labels to onehot ####
-    num_classes = len(np.unique(y))
-    
-
-    #### Split Data ####
-    ## Train and test ##
-    X_aux, X_test, y_aux, y_test = train_test_split(X, y, test_size=0.2, random_state=21)
-
-    ## Train and val ##
-    X_train, X_val, y_train, y_val = train_test_split(X_aux, y_aux, test_size=0.2, random_state=42)
-    
-    ## Convert labels to categorical ##
-    y_train_c = tf.keras.utils.to_categorical(y_train, num_classes)
-    y_val_c = tf.keras.utils.to_categorical(y_val, num_classes)
-    y_test_c = tf.keras.utils.to_categorical(y_test, num_classes)
-
-    values, counts = np.unique(y_aux, return_counts=True)
-    print(f"Aux data {X_aux.shape}, {y_aux.shape}, {counts}")
-
-    values, counts = np.unique(y_train, return_counts=True)
-    print(f"Train data {X_train.shape}, {y_train_c.shape}, {counts}")
-
-    values, counts = np.unique(y_val, return_counts=True)
-    print(f"Valid data {X_val.shape}, {y_val_c.shape}, {counts}")
-
-    values, counts = np.unique(y_test, return_counts=True)
-    print(f"Test data {X_test.shape}, {y_test_c.shape}, {counts}")
-
-    idx = np.random.randint(0, len(y_train_c))
-    print_image(X_train[idx], title=f"lab:{y_train_c[idx]}")
-
-    return X_train, y_train_c, X_val, y_val_c, X_test, y_test_c
 
 def print_image(img, title="Image"):
     plt.figure(figsize=(3,3))
@@ -285,10 +202,12 @@ def plotgraph(epochs, train, val, ax, plot, title):
 
 
 
-
-
 #### Load data ####
 b_list = ["dense", "block5", "block4", "block3", "block2", "block1"]
+
+pp = "../"
+task = "name"
+result_file = os.path.join(pp, "Results", f"Name_fine_tunning.xlsx")
 
 ## Save info ##
 block_list = []
@@ -308,22 +227,21 @@ for layer_name_fine in b_list:
     lr = 1e-6
     wd = 1e-4
 
-    epch = 2000
-    pt = 100
-    md = 0.00001
-    bz = 6
-
-    # epch = 2
-    # pt = 2
+    # epch = 2000
+    # pt = 100
     # md = 0.00001
     # bz = 6
 
-    pp = "../"
-    model_name = f"Fine_Tune_VGG16_{layer_name_fine}"
-    task = "name"
+    epch = 2
+    pt = 1
+    md = 0.00001
+    bz = 6
+
+    model_name = f"Prueba_VGG16_{layer_name_fine}"
+    
     
 
-    db_path = os.path.join(pp,f"Dataset/hw_drawings", task)
+    db_path = os.path.join(pp,f"hw_drawings", task)
     X, y = load_images_vgg16(db_path)
     # X_train, y_train_c, X_val, y_val_c, X_test, y_test_c = split_data(X, y)
     X_train, y_train_c, X_test, y_test_c = split_data_Train_Test(X, y)
@@ -340,7 +258,6 @@ for layer_name_fine in b_list:
     
     trainable_flag = False
     #### Set up  VGG16 layers as trainable or not ####
-    
     for layer in model.layers:
         if(layer_name_fine in layer.name):
             trainable_flag = True
@@ -509,8 +426,7 @@ result_df["Specificity"] = spec_list
 result_df["Sensitivity"] = sens_list
 result_df["F1_Score"] = f1_s_list
 
-pp = "../"
-result_file = os.path.join(pp, "Results", f"Fine_Tuned_VGG16.xlsx")
+
 print(result_file)
 # result_df.sort_values(by="Fine_Tune_Block", ascending=False, inplace=True)
 # result_df.reset_index(drop=True, inplace=True)
