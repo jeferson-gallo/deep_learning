@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex build/main"] 1717891930 "build/main.aux" "build/main.bbl" "build/main" 1717892169
+["bibtex build/main"] 1717898329 "build/main.aux" "build/main.bbl" "build/main" 1717899041
   "/usr/share/texlive/texmf-dist/bibtex/bst/llncs/splncs04.bst" 1642453212 32146 ee21ae2a29028dc8ad842a97200982c7 ""
-  "build/main.aux" 1717892169 1429 9f36c302b0a57b54228748de60055ac4 "pdflatex"
-  "refs.bib" 1717812362 1942 c28a6c5c5f569dbc3d5bee9d5ca7414f ""
+  "build/main.aux" 1717899041 2956 20b2a870c768f859ae5f5ccb1832820d "pdflatex"
+  "refs.bib" 1717895467 2146 b1ec275ddde684cb4bbf81c216eddb32 ""
   (generated)
   "build/main.bbl"
   "build/main.blg"
-["pdflatex"] 1717892163 "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Deep_Learning/Informe_Final/main.tex" "build/main.pdf" "main" 1717892169
+["pdflatex"] 1717899036 "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Deep_Learning/deep_learning/Informe_Final_Latex/main.tex" "build/main.pdf" "main" 1717899041
   "/etc/texmf/web2c/texmf.cnf" 1717789895 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/gita24/.texlive2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1717794407 1405642 cde767e4d8af7f3b78e260d8d5fbc2ec ""
-  "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Deep_Learning/Informe_Final/main.tex" 1717892163 11996 31020142c6cbe2668faee6d31ec0d721 ""
+  "/home/gita24/Documentos/UdeA/UdeA_Master/2_Semester/Deep_Learning/deep_learning/Informe_Final_Latex/main.tex" 1717899035 19152 8c9d3107420d91c97056e6c175ff3fad ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -206,13 +206,13 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1717802863 4379155 98693266ff65f58d9f98aff394de12d2 ""
-  "build/main.aux" 1717892169 1429 9f36c302b0a57b54228748de60055ac4 "pdflatex"
-  "build/main.bbl" 1717891930 694 c293c1fb9d576163df45aa8f7daeda5c "bibtex build/main"
-  "build/main.out" 1717892163 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "build/main.aux" 1717899041 2956 20b2a870c768f859ae5f5ccb1832820d "pdflatex"
+  "build/main.bbl" 1717898329 848 a41c810c058c8d78a502817ad171ab59 "bibtex build/main"
+  "build/main.out" 1717899036 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   "images/HW_Tasks.png" 1717891639 129705 9f7675f3592672658b99eb4751ec47b3 ""
   "images/logosimbolo-horizontal.png" 1717812362 840923 4811043025fcc326f663f53fd79f4bbe ""
   "images/logosimbolo-vertical.png" 1717812362 1933823 6da9390141f09d9179454e2245626ec4 ""
-  "main.tex" 1717892163 11996 31020142c6cbe2668faee6d31ec0d721 ""
+  "main.tex" 1717899035 19152 8c9d3107420d91c97056e6c175ff3fad ""
   (generated)
   "build/main.aux"
   "build/main.log"

@@ -199,7 +199,7 @@ motores como la bradicinesia (lentitud en los movimientos voluntarios), la rigid
 muscular y los temblores en reposo. Estos síntomas afectan significativamente 
 diferentes actividades de los pacientes como lo es la escritura a mano, ya que los 
 procesos de escritura necesitan una alta coordinación de los músculos y tendones 
-que conectan el antebrazo la muñeca y los dedos. Adicionalmente, las principales 
+que conectan el antebrazo, la muñeca y los dedos. Adicionalmente, las principales 
 anomalías que se evidencia en la escritura son la micrografía (reducción anormal en 
 el tamaño de la escritura) y la disgrafía (déficits en la producción grafomotora 
 debido a una combinación de varios signos cardinales de la enfermedad de Parkinson)~\cite{ref32}.
@@ -208,12 +208,11 @@ debido a una combinación de varios signos cardinales de la enfermedad de Parkin
 \subsection*{Objetivo de Machine Learning}
 
 En este proyecto se abordará una clasificación bi-clase entre pacientes con la enfermedad de Parkinson 
-versus personas sanas mediante señales de escritura a mano, utilizando diferentes tareas como dibujos, 
-escritos y una tarea compleja. Las imagenes correcpondientes a cada tarea se procesan mediante una red 
-convolucional VGG16, la cual fue entrenada con la base de datos ImageNet, y a la cuál se le agregan dos 
-capas densas completamente conectadas para realizar la clasificación entre parkinson y controles.
-El objetivo principal se basa en determinar cual de las diferentes tareas de escritura me permite un mejor
-modelamiento de la enfermedad de parkinson. 
+versus personas sanas (HC) mediante señales de escritura a mano, utilizando diferentes tareas como dibujos, 
+escritos y una tarea compleja. Las imágenes correspondientes a cada tarea se procesan mediante una red 
+convolucional VGG-16, la cual fue entrenada con la base de datos ImageNet. El objetivo principal se 
+basa en determinar cuál de las diferentes tareas de escritura me permite un mejor modelamiento de 
+la enfermedad de parkinson.
 
 
 
@@ -223,13 +222,14 @@ Los datos fueron recopilados utilizando una tableta Wacom Cintiq 13 HD con retro
 para los participantes y con una frecuencia de muestreo de 180 Hz. Esta tableta proporciona seis 
 señales diferentes provenientes del proceso de escritura: la posición $x$, la posición $y$, la distancia 
 desde la superficie hasta el lápiz (la posición $z$), la presión del lápiz, el ángulo azimut y la 
-inclinación del lápiz (la altitud). Para la creación de las imagenes se utilian las señales $(x,y)$
+inclinación del lápiz (la altitud). Para la creación de las imágenes se utilizan las señales $(x,y)$
 las cuales corresponden a los trazos realizados sobre la superficie de la tablet. Un ejemplo de las
-imágenes resultantes para algunas tareas se encuentran en la Figura~\ref{fig:db_images}.
+imágenes resultantes para algunas tareas se encuentran en la Figura~\ref*{fig:db_images}.
 
 Para este trabajo se tienen un total de 7 tareas dentro de las cuales se encuentran algunos escritos 
-como el alfabeto, frase libre y nombre; tareas de dibuno como una linea curva, spiral y una casa; y 
-finalmente se tiene una tarea compleja llamada rey. 
+como el alfabeto, frase libre y nombre; tareas de dibujo como una línea curva, espiral y una casa; y 
+finalmente se tiene una tarea compleja llamada rey. En la Tabla~\ref{tab:gita_data} se encuentran 
+la cantidad de participantes por cada una de las tareas. 
 
 
 \begin{figure}
@@ -238,6 +238,26 @@ finalmente se tiene una tarea compleja llamada rey.
     \caption{Imágenes de la base de datos.}
     \label{fig:db_images}
 \end{figure}
+
+
+\begin{table}[h!!]
+\caption{Cantidad de participantes entre pacientes (PD), y controles (HC), en cada una de las tareas.}
+\centering
+\label{tab:gita_data}
+%\resizebox{\linewidth}{!}{
+\begin{tabular}{ccc}
+\hline
+\textbf{Tarea}       & \textbf{\# Pacientes (PD)} & \textbf{\# Controles (HC)} \\ \hline
+\textbf{alphabet}    & 71                         & 55                         \\
+\textbf{line1}       & 60                         & 42                         \\
+\textbf{freewriting} & 73                         & 54                         \\
+\textbf{house}       & 75                         & 55                         \\
+\textbf{rey}         & 69                         & 54                         \\
+\textbf{name}        & 74                         & 55                         \\
+\textbf{spiral}      & 75                         & 55                         \\ \hline
+\end{tabular}
+%}
+\end{table}
 
 
 \subsection*{Metricas de desempeño}
@@ -298,6 +318,112 @@ Además, otras métricas pueden ser estimadas de acuerdo con la información de 
     \end{equation}
     
 \end{itemize}
+
+\subsection*{Modelo de Deep Learning}
+
+Para este trabajo se implementó la red neuronal convolucional VGG16. Esta es una arquitectura 
+desarrollada por el Visual Geometry Group (VGG) de la Universidad de Oxford, que se destacó 
+en la competición ImageNet Large Scale Visual Recognition Challenge (ILSVRC) de 2014. Se 
+caracteriza por su simplicidad y efectividad, utilizando principalmente pequeñas capas 
+convolucionales de 3$\times$3 píxeles y capas de max-pooling de 2$\times$2 píxeles, organizadas en 5 bloques 
+de capas convolucionales. Esta arquitectura ha demostrado ser 
+extremadamente eficiente en tareas de reconocimiento de imágenes, estableciendo un nuevo 
+estándar en precisión y eficiencia en el campo del aprendizaje profundo~\cite{ref9}.
+
+El modelo implementado en este trabajo fue pre-entrenado con la base de datos ImageNet y se le agregan
+dos capas densas para realizar la clasificación entre pacientes y controles. 
+
+
+\subsection*{Experimentos}
+
+\subsubsection*{Exploración de tareas}
+
+Para este primer experimento se desea conocer cuál de las tareas utilizadas modela de una mejor manera
+la enfermedad del parkinson en la tarea de clasificación. En la Tabla~\ref*{tab:VGG16_Freeze} se encuentran
+los resultados obtenidos para las tareas cuando no se afinan ningún bloque convolucional y solamente se afinan
+las capas densas encargadas de realizar la clasificación. En la Tabla~\ref*{tab:VGG16_tuned} se encuentran 
+los resultados del experimento cuando se afinan todos los bloques convolucionales y las capas densas de la red.
+
+En ambos casos la tarea de escritura del nombre obtuvo exactitudes del 84\% del modelo sin afinar y 73.08\%
+cuando se afinaron todos los bloques convolucionales.
+
+
+\begin{table}[h!!]
+\caption{Resultados de la exploración de tareas utilizando el modelo VGG16 sin afinar.}
+\centering
+\label{tab:VGG16_Freeze}
+%\resizebox{\linewidth}{!}{
+\begin{tabular}{ccccc}
+\hline
+\textbf{Task}        & \textbf{Accuracy} & \textbf{Specificity} & \textbf{Sensitivity} & \textbf{F1\_Score} \\ \hline
+\textbf{name}        & 84.62             & 100.00               & 75.00                & 0.86               \\
+\textbf{spiral}      & 76.92             & 86.67                & 63.64                & 0.70               \\
+\textbf{rey}         & 76.00             & 63.64                & 85.71                & 0.80               \\
+\textbf{alphabet}    & 65.38             & 54.55                & 73.33                & 0.71               \\
+\textbf{house}       & 57.69             & 41.67                & 71.43                & 0.65               \\
+\textbf{line1}       & 42.86             & 37.50                & 46.15                & 0.50               \\
+\textbf{freewriting} & 23.08             & 23.08                & 23.08                & 0.23               \\ \hline
+\end{tabular}
+%}
+\end{table}
+
+
+
+\begin{table}[h!!]
+\caption{Resultados de la exploración de tareas afinando todos los bloques convolucionales 
+del modelo VGG16.}
+\centering
+\label{tab:VGG16_tuned}
+%\resizebox{\linewidth}{!}{
+\begin{tabular}{ccccc}
+\hline
+\textbf{Task}        & \textbf{Accuracy} & \textbf{Specificity} & \textbf{Sensitivity} & \textbf{F1\_Score} \\ \hline
+\textbf{name}        & 73.08             & 70.00                & 75.00                & 0.77               \\
+\textbf{spiral}      & 73.08             & 66.67                & 81.82                & 0.72               \\
+\textbf{alphabet}    & 65.38             & 72.73                & 60.00                & 0.67               \\
+\textbf{rey}         & 64.00             & 54.55                & 71.43                & 0.69               \\
+\textbf{house}       & 57.69             & 58.33                & 57.14                & 0.59               \\
+\textbf{freewriting} & 53.85             & 53.85                & 53.85                & 0.54               \\
+\textbf{line1}       & 47.62             & 37.50                & 53.85                & 0.56               \\ \hline
+\end{tabular}
+%}
+\end{table}
+
+\subsubsection*{Exploración de la tare "Name"}
+
+Debido a que en el anterior experimento la tarea name obtuvo el mejor desempeño en ambos casos, además
+se observó una variación entre el uso del modelo sin afinar y afinando todas las capas. En este experimento
+se exploran diferentes grados de afinación de los bloques convolucionales. En la Tabla~\ref*{tab:VGG16_block}
+se observan los resultados al variar la cantidad de bloques convolucionales afinados. El mejor resultado 
+finalmente fue afinando solamente la capa densa que corresponde a la etapa de clasificación. Esto puede estar 
+ocurriendo debido a la poca cantidad de datos, ya que no se alcanzan a afinar correctamente todas las capas
+convolucionales para modelar el fenómeno del parkinson.
+
+\begin{table}[h!!]
+\caption{Resultados de la exploración de tareas afinando todos los bloques convolucionales 
+del modelo VGG16.}
+\centering
+\label{tab:VGG16_block}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{ccccccc}
+\hline
+\textbf{Block}  & \textbf{Total parameters} & \textbf{Trainable parameters} & \textbf{Accuracy} & \textbf{Specificity} & \textbf{Sensitivity} & \textbf{F1\_Score} \\ \hline
+\textbf{dense}  & 14,780,610                & 65,922                        & 87.50             & 100.00               & 75.00                & 0.86               \\
+\textbf{block5} & 14,780,610                & 7,145,346                     & 73.08             & 100.00               & 56.25                & 0.72               \\
+\textbf{block4} & 14,780,610                & 13,045,122                    & 53.85             & 60.00                & 50.00                & 0.57               \\
+\textbf{block3} & 14,780,610                & 14,520,450                    & 65.38             & 100.00               & 43.75                & 0.61               \\
+\textbf{block2} & 14,780,610                & 14,741,890                    & 76.92             & 100.00               & 62.50                & 0.77               \\
+\textbf{block1} & 14,780,610                & 14,780,610                    & 73.08             & 70.00                & 75.00                & 0.77               \\ \hline
+\end{tabular}
+}
+\end{table}
+
+
+
+\section*{Discribución de los notebooks}
+
+
+
 
 
 \bibliographystyle{splncs04}
