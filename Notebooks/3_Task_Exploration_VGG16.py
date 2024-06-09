@@ -203,7 +203,6 @@ def plotgraph(epochs, train, val, ax, plot, title):
 
 
 
-
 #### Load data ####
 all_task_list = ["alphabet", "freewriting", "house", "line1", "name", "rey", "spiral"]
 
